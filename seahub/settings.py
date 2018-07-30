@@ -166,7 +166,8 @@ TEMPLATES = [
     },
 ]
 
-
+# django.utils.translation -- that module depends on the settings.
+gettext_noop = lambda s: s
 LANGUAGES = (
     # ('bg', gettext_noop(u'български език')),
     ('ca', u'Català'),
@@ -275,6 +276,9 @@ CONSTANCE_DATABASE_CACHE_BACKEND = 'default'
 
 AUTHENTICATION_BACKENDS = (
     'seahub.social_core.backends.weixin_enterprise.WeixinWorkOAuth2',
+    'social_core.backends.weixin.WeixinOAuth2',
+
+    'seahub.base.accounts.ProxyRemoteUserBackend',
     'seahub.base.accounts.AuthBackend',
     'seahub.oauth.backends.OauthRemoteUserBackend',
 )
@@ -282,9 +286,14 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_VERIFY_SSL = True
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/profile/'
+
 SOCIAL_AUTH_WEIXIN_WORK_AGENTID = ''
 SOCIAL_AUTH_WEIXIN_WORK_KEY = ''
 SOCIAL_AUTH_WEIXIN_WORK_SECRET = ''
+
+SOCIAL_AUTH_WEIXIN_KEY = ''
+SOCIAL_AUTH_WEIXIN_SECRET = ''
+
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
@@ -295,7 +304,7 @@ SOCIAL_AUTH_PIPELINE = (
     'seahub.social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     # 'social_core.pipeline.user.user_details',
-    'seahub.social_core.pipeline.user.save_profile',
+    'seahub.social_core.pipeline.user.save_profile',    
 )
 
 ENABLE_OAUTH = False
